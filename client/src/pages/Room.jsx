@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
+import Participant from "./Participant";
 import { Container, Row, Col, Image, Card, Button } from "react-bootstrap";
 import ss from "../assets/images/ss.png";
 import maximize from "../assets/images/maximize.png";
@@ -19,7 +20,7 @@ import "../style.css"
 // import { Videocontext } from "../context/video-context";
 // import { Usercontext } from "../context/user-context";
 
-function Room() {
+function Room({ roomName, room, handleLogout }) {
     // const [videoState] = useContext(Videocontext)
     // const [state] = useContext(Usercontext)
     // const token = localStorage.token
@@ -27,6 +28,31 @@ function Room() {
     // const [user] = useState(state.user)
     // const [roomName] = useState(videoState.roomName)
     // console.log(videoState.roomName);
+    const [participants, setParticipants] = useState([]);
+
+  useEffect(() => {
+    const participantConnected = (participant) => {
+      setParticipants((prevParticipants) => [...prevParticipants, participant]);
+    };
+
+    const participantDisconnected = (participant) => {
+      setParticipants((prevParticipants) =>
+        prevParticipants.filter((p) => p !== participant)
+      );
+    };
+
+    room.on("participantConnected", participantConnected);
+    room.on("participantDisconnected", participantDisconnected);
+    room.participants.forEach(participantConnected);
+    return () => {
+      room.off("participantConnected", participantConnected);
+      room.off("participantDisconnected", participantDisconnected);
+    };
+  }, [room]);
+
+  const remoteParticipants = participants.map((participant) => (
+    <Participant key={participant.sid} participant={participant} />
+  ));
 
 
     const [menu, setMenu] = useState()
@@ -101,14 +127,24 @@ function Room() {
                     style={{ objectFit: "cover", width: "100%" }}
                     src="https://img.freepik.com/free-photo/close-up-smiley-man-taking-selfie_23-2149155156.jpg?w=2300"
                   /> */}
-                  <div id="box"></div>
+                        <div className="local-participant">
+        {room ? (
+          <Participant
+            key={room.localParticipant.sid}
+            participant={room.localParticipant}
+          />
+        ) : (
+          ""
+        )}
+      </div>
                 </Col>
                 <Col sm={4} style={{ position: "relative" }}>
-                  <Image
+                  {/* <Image
                     className="rounded-4"
                     style={{ objectFit: "cover", width: "100%" }}
                     src="https://st.depositphotos.com/2413271/5050/i/950/depositphotos_50503825-stock-photo-handsome-man-taking-selfie.jpg"
-                  />
+                  /> */}
+                  <div className="remote-participants">{remoteParticipants}</div>
                   <div
                     style={{ position: "absolute", right: 0, bottom: 0 }}
                     className="d-flex justify-content-end"

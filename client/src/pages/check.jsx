@@ -5,7 +5,7 @@ import icon from "../assets/images/icon.png";
 import ready from "../assets/images/ready.png";
 import { useContext } from "react";
 import { Videocontext } from "../context/video-context";
-import { Twilio, createLocalVideoTrack, TrackPublication, Participant, Track, connect, createLocalTracks } from 'twilio-video'
+import { connect, createLocalTracks } from 'twilio-video'
 import { Usercontext } from "../context/user-context";
 import Buttonvid from "../partial/Buttonvid";
 import "../style.css"
@@ -20,49 +20,39 @@ export default function Check() {
     const [user] = useState(state.user)
     const [roomName] = useState(videoState.roomName)
     console.log(videoState.roomName);
+    console.log(token);
     const Navigate = useNavigate();
+    const [room, setRoom] = useState(null);
 
-    const handleRoom = (e) => {
+    const handleRoom = async (e) => {
         e.preventDefault();
-
+        const tracks = await createLocalTracks({
+          audio: true,
+          video: {facingMode: 'user'}
+      })
+      const username = user
+      const nameRoom = roomName
+      const LocalVideoTrack = tracks.find(track => track.kind === 'video');
+      const box = document.getElementById("box");
+    const on = document.getElementById("on-btn");
+    const name = document.getElementById("name")
+    const rooms = document.getElementById("roomName")
+    await connect(`${token}`, {
+        name: `${roomName}`,
+        tracks
+    })
+    box.appendChild(LocalVideoTrack.attach());
+    // on.style.visibility = "hidden";
+    console.log("Local Tracks : ", tracks);
+    console.log("You are connect to room : ", nameRoom);
+    console.log("User Name : ", username);
+        // name.append(document.createTextNode(username))
+    // rooms.append(document.createTextNode(`You are connected to room : ${nameRoom
+        
         Navigate('/room')
     }
 
-//   async function start() {
-
-//         // const startButton = document.getElementById("start")
-//         // startButton.value = "on"
-//         const tracks = await createLocalTracks();
-//         const box = document.getElementById("box");
-//         const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-//         box.appendChild(LocalVideoTrack.attach());
-// }
-
-// useEffect(() => {
-//   var localTracksPromise = this.previewTracks
-//   ? Promise.resolve(this.previewTracks)
-//   : Video.createLocalTracks();
-
-// localTracksPromise.then(
-//   (tracks)=> {
-//       window.previewTracks = this.previewTracks = tracks;
-//       var previewContainer = document.getElementById("local-media");
-//       if (!previewContainer.querySelector("video")) {
-//           this.attachTracks(tracks, previewContainer);
-//       }
-//   },
-//   (error)=> {
-//       this.log("Unable to access Camera and Microphon");
-//   }
-// );
-// })
-
-// var previewContainer = this.ref.localMedia;
-// if (!previewContainer.querySelector("video")) {
-//     this.attachParticipantTracks(room.localParticipant, previewContainer);
-// }
-
-async function room() {
+async function rooms() {
     const tracks = await createLocalTracks({
         audio: true,
         video: {facingMode: 'user'}
@@ -105,7 +95,7 @@ async function room() {
             <Col sm={6} md={6} className="text-end">
               <Row>
                 <Col sm={10}>
-                  <p className="mb-0 mt-2">Lucky Christopher Chen</p>
+                  <p className="mb-0 mt-2">{state.user}</p>
                   <p className="m-0">Surveyor</p>
                 </Col>
                 <Col sm={2}>
@@ -120,31 +110,31 @@ async function room() {
             <Col
               sm={8}
               className="rounded-4"
-              style={{ position: "relative", paddingLeft: 50 }}
+              style={{ position: "relative", paddingLeft: 30 }}
             >
 
               <div id="box"></div>
-              {/* <div ref="localMedia" id="local-media"></div> */}
+
               <Buttonvid />
             </Col>
-            <Col sm={4}>
+            <Col sm={4} className="px-3">
               <Card
-                className="rounded-4 text-center me-5"
-                style={{ height: 480 }}
+                className="rounded-4 text-center me-3"
+                style={{ height: 404 }}
               >
                 <Card.Img variant="top" src={ready} className="px-5 py-4" />
                 <Card.Body>
                   <Card.Title
-                    className="textDefault py-4"
-                    style={{ fontSize: 30, fontWeight: 800, marginTop: 10 }}
+                    className="textDefault py-3"
+                    style={{ fontSize: 30, fontWeight: 800, marginTop: 6 }}
                   >
                     Ready to join
                   </Card.Title>
                   <Button
                     variant="warning"
-                    className="container py-2"
-                    style={{ fontSize: 12, marginTop: 70 }}
-                    onClick={room}
+                    className="container"
+                    style={{ fontSize: 12, marginTop: 8, paddingTop:12, paddingBottom:12 }}
+                    onClick={handleRoom}
                   >
                     Join Now
                   </Button>

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import audio from "../assets/images/audio.png";
 import video from "../assets/images/video.png";
 import more from "../assets/images/more.png";
-import camoff from "../assets/images/camoff.jpg"
+import camoff from "../assets/images/camoff.png"
 import offvideo from "../assets/images/offvideo.png"
 import offaudio from "../assets/images/offaudio.png"
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Twilio, createLocalVideoTrack, TrackPublication, Participant, Track, connect, createLocalTracks } from 'twilio-video'
+import { createLocalTracks } from 'twilio-video'
 
 function Buttonvid() {
   const [state, setState] = useState(true);
@@ -16,41 +16,69 @@ function Buttonvid() {
     console.log(state);
   };
 
-  const [states, setStates] = useState(true);
+  const [isVideoActive, setIsVideoActive] = useState(true)
 
-  const buttonHandlers = () => {
-    setStates((current) => !current);
-    console.log(states);
-  };
+  const getVideo = async() => {
 
-  // let startButton
-  // startButton.click()
-  async function start() {
-    const startButton = document.getElementById("start")
-    if (startButton.value === "on") {
-        startButton.value = "off"
-        startButton.innerHTML = '<img src="' + video + '" width="23px"/>'
-        const tracks = await createLocalTracks();
-        const box = document.getElementById("box");
-        const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-        box.innerHTML = ""
-        box.appendChild(LocalVideoTrack.attach());
-    } else {
-        startButton.value = "on"
-        const tracks = await createLocalTracks();
-        const box = document.getElementById("box");
-        box.innerHTML = '<img src="' + camoff + '" width="100%" />'
-        startButton.innerHTML = '<img src="' + offvideo + '" width="23px"/>'
-        tracks.stop()
+      setIsVideoActive((current) => !current);
+      const tracks = await createLocalTracks({
+        audio: true,
+        video: { height: 720, frameRate: 24, width: 1280 }
+     });
+      const box = document.getElementById("box");
+      const LocalVideoTrack = tracks.find(track => track.kind === 'video');
+      box.innerHTML = ""
+      box.appendChild(LocalVideoTrack.attach());
+  }
+
+  const stopVideo = async() => {
+    console.log("tutup");
+    setIsVideoActive((current) => !current);
+    const box = document.getElementById("box");
+    const tracks = await createLocalTracks();
+    const LocalVideoTrack = tracks.find(track => track.kind === 'video');
+    LocalVideoTrack.stop()
+    console.log(tracks);    
+    box.innerHTML = '<img src="' + camoff + '" width="100%" />'
+  }
+
+  console.log(isVideoActive);
+
+  useEffect(()=> {
+    if(isVideoActive){
+      getVideo()
     }
-}
-// start()
+  }, [])
+
+//   async function start() {
+//     const startButton = document.getElementById("start")
+//     if (startButton.value === "on") {
+//         startButton.value = "off"
+//         startButton.innerHTML = '<img src="' + video + '" width="23px"/>'
+//         const tracks = await createLocalTracks({
+//           name: 'my-room-name',
+//           audio: true,
+//           video: { height: 360, frameRate: 24, width: 1280 }
+//        })
+//         const box = document.getElementById("box");
+//         const LocalVideoTrack = tracks.find(track => track.kind === 'video');
+//         box.innerHTML = ""
+//         box.appendChild(LocalVideoTrack.attach());
+//     } else {
+//         startButton.value = "on"
+//         const tracks = await createLocalTracks();
+//         const box = document.getElementById("box");
+//         box.innerHTML = '<img src="' + camoff + '" width="100%" />'
+//         startButton.innerHTML = '<img src="' + offvideo + '" width="23px"/>'
+//         tracks.stop()
+//     }
+// }
 
   return (
-    <Container style={{ position: "absolute", top: 380, left: 280 }}>
+    <Container style={{ position: "absolute", top: 290, left: 295 }}>
       <Row>
         <Col className="bg-white rounded-4 p-3 d-flex" sm={3}>
-          <Button
+        <Button
             className="btn me-2 border-0"
             onClick={buttonHandler}
             style={
@@ -75,23 +103,35 @@ function Buttonvid() {
               alt=""
             />}
           </Button>
+
+
           <Button
-            className="btn me-2 border-0"
-            // onClick={buttonHandlers}
-            id="start"
-            value = "off"
-            onClick={start}
-            style={
-              { backgroundColor: "#DDE7FF" }
-            }
+              className="btn me-2 border-0"
+              onClick={ 
+                isVideoActive ? stopVideo : getVideo
+              }
+              style={
+                { backgroundColor: "#DDE7FF" }
+              }
           >
+
+          {isVideoActive ? 
             <img
               src={video}
               width={23}
+              height={20}
               style={{ objectFit: "contain" }}
               alt=""
-            />
+            /> :
+            <img
+              src={offvideo}
+              width={23}
+              height={20}
+              style={{ objectFit: "contain" }}
+              alt=""
+            />}
           </Button>
+
           <Button
             className="btn border-0"
             style={{ backgroundColor: "#F1F5F9" }}
