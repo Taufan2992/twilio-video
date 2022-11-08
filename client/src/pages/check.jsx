@@ -26,57 +26,57 @@ export default function Check() {
 
     const handleRoom = async (e) => {
         e.preventDefault();
-        const tracks = await createLocalTracks({
-          audio: true,
-          video: {facingMode: 'user'}
-      })
-      const username = user
-      const nameRoom = roomName
-      const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-      const box = document.getElementById("box");
-    const on = document.getElementById("on-btn");
-    const name = document.getElementById("name")
-    const rooms = document.getElementById("roomName")
-    await connect(`${token}`, {
-        name: `${roomName}`,
-        tracks
-    })
-    box.appendChild(LocalVideoTrack.attach());
-    // on.style.visibility = "hidden";
-    console.log("Local Tracks : ", tracks);
-    console.log("You are connect to room : ", nameRoom);
-    console.log("User Name : ", username);
+    //     const tracks = await createLocalTracks({
+    //       audio: true,
+    //       video: {facingMode: 'user'}
+    //   })
+    //   const username = user
+    //   const nameRoom = roomName
+    //   const LocalVideoTrack = tracks.find(track => track.kind === 'video');
+    //   const box = document.getElementById("box");
+    // const on = document.getElementById("on-btn");
+    // const name = document.getElementById("name")
+    // const rooms = document.getElementById("roomName")
+    // await connect(`${token}`, {
+    //     name: `${roomName}`,
+    //     tracks
+    // })
+    // box.appendChild(LocalVideoTrack.attach());
+    // // on.style.visibility = "hidden";
+    // console.log("Local Tracks : ", tracks);
+    // console.log("You are connect to room : ", nameRoom);
+    // console.log("User Name : ", username);
         // name.append(document.createTextNode(username))
     // rooms.append(document.createTextNode(`You are connected to room : ${nameRoom
         
         Navigate('/room')
     }
 
-async function rooms() {
-    const tracks = await createLocalTracks({
-        audio: true,
-        video: {facingMode: 'user'}
-    })
-    const username = user
-    const nameRoom = roomName
-    const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-    const box = document.getElementById("box");
-    const on = document.getElementById("on-btn");
-    const name = document.getElementById("name")
-    const rooms = document.getElementById("roomName")
-    await connect(`${token}`, {
-        name: `${roomName}`,
-        tracks
-    })
-    box.appendChild(LocalVideoTrack.attach());
-    // on.style.visibility = "hidden";
-    console.log("Local Tracks : ", tracks);
-    console.log("You are connect to room : ", nameRoom);
-    console.log("User Name : ", username);
-    // name.append(document.createTextNode(username))
-    // rooms.append(document.createTextNode(`You are connected to room : ${nameRoom}`))
-    Navigate('/room')
-  };
+// async function rooms() {
+//     const tracks = await createLocalTracks({
+//         audio: true,
+//         video: {facingMode: 'user'}
+//     })
+//     const username = user
+//     const nameRoom = roomName
+//     const LocalVideoTrack = tracks.find(track => track.kind === 'video');
+//     const box = document.getElementById("box");
+//     const on = document.getElementById("on-btn");
+//     const name = document.getElementById("name")
+//     const rooms = document.getElementById("roomName")
+//     await connect(`${token}`, {
+//         name: `${roomName}`,
+//         tracks
+//     })
+//     box.appendChild(LocalVideoTrack.attach());
+//     // on.style.visibility = "hidden";
+//     console.log("Local Tracks : ", tracks);
+//     console.log("You are connect to room : ", nameRoom);
+//     console.log("User Name : ", username);
+//     // name.append(document.createTextNode(username))
+//     // rooms.append(document.createTextNode(`You are connected to room : ${nameRoom}`))
+//     Navigate('/room')
+//   };
 
   return (
     <>

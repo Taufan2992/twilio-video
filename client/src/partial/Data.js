@@ -2,7 +2,7 @@ import React from 'react'
 
 function Data() {
   return (
-    <div>Data</div>
+    <div className='fw-bold' style={{height:490}}>Data</div>
   )
 }
 

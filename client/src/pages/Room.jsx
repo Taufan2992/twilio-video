@@ -14,251 +14,366 @@ import phone from "../assets/images/phone.png";
 import Chat from "../partial/Chat";
 import Data from "../partial/Data";
 import Screen from "../partial/Screen";
-import "../style.css"
-// import { Twilio, createLocalVideoTrack, TrackPublication, Participant, Track, connect, createLocalTracks } from 'twilio-video'
-// import { useContext } from "react";
-// import { Videocontext } from "../context/video-context";
-// import { Usercontext } from "../context/user-context";
+import copy from "../assets/images/copy.png"
+import signal from "../assets/images/signal.png"
+import person from "../assets/images/person.png"
+import roomicon from "../assets/images/roomicon.png"
+import userdataon from "../assets/images/useron.png";
+import "../style.css";
 
-function Room({ roomName, room, handleLogout }) {
-    // const [videoState] = useContext(Videocontext)
-    // const [state] = useContext(Usercontext)
-    // const token = localStorage.token
-    // console.log("Access Token : ", token);
-    // const [user] = useState(state.user)
-    // const [roomName] = useState(videoState.roomName)
-    // console.log(videoState.roomName);
-    const [participants, setParticipants] = useState([]);
+function Room() {
+  const [menu, setMenu] = useState();
 
-  useEffect(() => {
-    const participantConnected = (participant) => {
-      setParticipants((prevParticipants) => [...prevParticipants, participant]);
-    };
+  const handleData = () => setMenu(1);
+  const handleChat = () => setMenu(2);
+  const handleScreen = () => setMenu(3);
 
-    const participantDisconnected = (participant) => {
-      setParticipants((prevParticipants) =>
-        prevParticipants.filter((p) => p !== participant)
-      );
-    };
-
-    room.on("participantConnected", participantConnected);
-    room.on("participantDisconnected", participantDisconnected);
-    room.participants.forEach(participantConnected);
-    return () => {
-      room.off("participantConnected", participantConnected);
-      room.off("participantDisconnected", participantDisconnected);
-    };
-  }, [room]);
-
-  const remoteParticipants = participants.map((participant) => (
-    <Participant key={participant.sid} participant={participant} />
-  ));
-
-
-    const [menu, setMenu] = useState()
-
-    const handleData =()=> setMenu(1)
-    const handleChat =()=> setMenu(2)
-    const handleScreen =()=> setMenu(3)
-
-    function GetData() {
-        if (menu === 1) {
-            const btnData = document.getElementById("data")
-            btnData.style.backgroundColor = "rgb(79	129	255)";
-            const btnChat = document.getElementById("chat")
-            btnChat.style.backgroundColor = "rgb(241 245 249)";
-            const btnScreen = document.getElementById("screen")
-            btnScreen.style.backgroundColor = "rgb(241 245 249)";
-            return <Data/>
-        } else if (menu === 2) {
-            const btnChat = document.getElementById("chat")
-            btnChat.style.backgroundColor = "rgb(79	129	255)";
-            const btnScreen = document.getElementById("screen")
-            btnScreen.style.backgroundColor = "rgb(241 245 249)";
-            const btnData = document.getElementById("data")
-            btnData.style.backgroundColor = "rgb(241 245 249)";
-            return <Chat/>
-        } else if (menu === 3) {
-            const btnScreen = document.getElementById("screen")
-            btnScreen.style.backgroundColor = "rgb(79	129	255)";
-            const btnChat = document.getElementById("chat")
-            btnChat.style.backgroundColor = "rgb(241 245 249)";
-            const btnData = document.getElementById("data")
-            btnData.style.backgroundColor = "rgb(241 245 249)";
-            return <Screen/>
-        }
+  function GetData() {
+    if (menu === 1) {
+      const btnData = document.getElementById("data");
+      btnData.style.backgroundColor = "rgb(79	129	255)";
+      const btnChat = document.getElementById("chat");
+      btnChat.style.backgroundColor = "rgb(241 245 249)";
+      const btnScreen = document.getElementById("screen");
+      btnScreen.style.backgroundColor = "rgb(241 245 249)";
+      return <Data />;
+    } else if (menu === 2) {
+      const btnChat = document.getElementById("chat");
+      btnChat.style.backgroundColor = "rgb(79	129	255)";
+      const btnScreen = document.getElementById("screen");
+      btnScreen.style.backgroundColor = "rgb(241 245 249)";
+      const btnData = document.getElementById("data");
+      btnData.style.backgroundColor = "rgb(241 245 249)";
+      return <Chat />;
+    } else if (menu === 3) {
+      const btnScreen = document.getElementById("screen");
+      btnScreen.style.backgroundColor = "rgb(79	129	255)";
+      const btnChat = document.getElementById("chat");
+      btnChat.style.backgroundColor = "rgb(241 245 249)";
+      const btnData = document.getElementById("data");
+      btnData.style.backgroundColor = "rgb(241 245 249)";
+      return <Screen />;
     }
+  }
 
-  //   async function room() {
-  //   const tracks = await createLocalTracks({
-  //       audio: true,
-  //       video: {facingMode: 'user'}
-  //   })
-  //   const username = user
-  //   const nameRoom = roomName
-  //   const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-  //   const box = document.getElementById("box");
-  //   const on = document.getElementById("on-btn");
-  //   const name = document.getElementById("name")
-  //   const rooms = document.getElementById("roomName")
-  //   await connect(`${token}`, {
-  //       name: `${roomName}`,
-  //       tracks
-  //   })
-  //   box.appendChild(LocalVideoTrack.attach());
-  //   // on.style.visibility = "hidden";
-  //   console.log("Local Tracks : ", tracks);
-  //   console.log("You are connect to room : ", nameRoom);
-  //   console.log("User Name : ", username);
-  //   // name.append(document.createTextNode(username))
-  //   // rooms.append(document.createTextNode(`You are connected to room : ${nameRoom}`))
-  // };
   return (
     <div style={{ backgroundColor: "#FAFAFA", height: "100vh" }}>
       <Container className="py-4">
         <Row>
           <Col sm={8}>
             <Card className="p-4 rounded-4">
-              <h3 className="mb-3">Credit Application Surver</h3>
+              <div className="d-flex">
+                <h3 className="mb-3 textBold fw-bold" style={{ fontSize: 24 }}>
+                  Credit Application Surver
+                </h3>
+                <span
+                  className="mb-3 ms-3 mt-2 rounded-4 px-2 "
+                  style={{
+                    backgroundColor: "#E9F7F0",
+                    color: "#31BF7D",
+                    fontSize: 12,
+                  }}
+                >
+                  01 : 28 :05
+                </span>
+              </div>
+
               <Row>
                 <Col sm={8}>
-                  {/* <Image
+                  <Image
                     className="rounded-4"
-                    style={{ objectFit: "cover", width: "100%" }}
+                    style={{ objectFit: "cover", width: "100%", position:"relative" }}
                     src="https://img.freepik.com/free-photo/close-up-smiley-man-taking-selfie_23-2149155156.jpg?w=2300"
-                  /> */}
-                        <div className="local-participant">
-        {room ? (
-          <Participant
-            key={room.localParticipant.sid}
-            participant={room.localParticipant}
-          />
-        ) : (
-          ""
-        )}
-      </div>
+                  />
+                  <div className="d-flex m-2" style={{position:"absolute", top:75}}>
+                    <div className="rounded-3 px-3 py-1 me-3" style={{fontSize:12, backgroundColor:" rgba(0, 0, 0, 0.2)", marginRight:8, color:"white"}}>Nurcahyo</div>
+                    <div className="rounded-circle pb-1" style={{backgroundColor:"#4F81FF", paddingLeft:9 , paddingRight:9}}>
+                      <img src={signal} width={10} height={10} alt="" />
+                    </div>
+                  </div>
                 </Col>
                 <Col sm={4} style={{ position: "relative" }}>
-                  {/* <Image
+                  <Image
                     className="rounded-4"
-                    style={{ objectFit: "cover", width: "100%" }}
+                    style={{ objectFit: "cover", width: "100%", position:"relative" }}
                     src="https://st.depositphotos.com/2413271/5050/i/950/depositphotos_50503825-stock-photo-handsome-man-taking-selfie.jpg"
-                  /> */}
-                  <div className="remote-participants">{remoteParticipants}</div>
+                  />
+                  <div className="d-flex m-2" style={{position:"absolute", top:5}}>
+                    <div className="rounded-3 px-3 py-1 me-5" style={{fontSize:12, backgroundColor:" rgba(0, 0, 0, 0.2)", marginRight:8, color:"white"}}>Lucky (you)</div>
+                    <div className="rounded-circle pb-1 ms-4" style={{backgroundColor:"#4F81FF", paddingLeft:9 , paddingRight:9}}>
+                      <img className="" src={signal} width={10} height={10} alt="" />
+                    </div>
+                    
+                  </div>
+
                   <div
                     style={{ position: "absolute", right: 0, bottom: 0 }}
                     className="d-flex justify-content-end"
                   >
-                    <span
-                      className=" p-2 rounded-circle"
+                    <div className="me-2">
+                    <div
+                      className=" p-2 rounded-circle mx-2"
                       style={{ backgroundColor: "#F1F5F9" }}
                     >
                       <Image style={{ width: 30, height: 30 }} src={ss} />
-                    </span>
-                    <span
-                      className="p-2 rounded-circle"
+                    </div>
+                    <p className="mb-0 mt-1 text-center" style={{ fontSize: 12 }}>Screenshot</p>
+                    </div>
+
+                    <div>
+                    <div
+                      className="p-2 rounded-circle mx-2"
                       style={{ backgroundColor: "#F1F5F9" }}
                     >
                       <Image style={{ width: 30, height: 30 }} src={maximize} />
-                    </span>
+                    </div>
+                    <p className="mb-0 mt-1 text-center" style={{ fontSize: 12 }}>Maximize</p>
+                    </div>
+
                   </div>
                   {/* <div className="d-inline text-end"><Image src={maximize}/></div> */}
                 </Col>
               </Row>
             </Card>
-            <Card className="rounded-4 d-flex flex-row justify-content-around p-2 mt-4">
-              <Button 
-              className="border-0"
-                style={{ backgroundColor: "#DDE7FF", paddingLeft:20, paddingRight:20}}>
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={audio}
-                />
-              </Button>
-              <Button 
-              className="border-0"
-              style={{ backgroundColor: "#DDE7FF", paddingLeft:20, paddingRight:20 }}>
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={video}
-                />
-              </Button>
-              <Button
-              className="border-0"
-              style={{ backgroundColor: "#F1F5F9", paddingLeft:20, paddingRight:20 }}
-              onClick={handleData}
-              id="data"
-              >
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={userdata}
-                />
-              </Button>
-              <Button
-              className="border-0"
-              style={{ backgroundColor: "#F1F5F9", paddingLeft:20, paddingRight:20 }}
-              onClick={handleChat}
-              id="chat"
-              >
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={chat}
-                />
-              </Button>
-              <Button
-              className="border-0"
-              style={{ backgroundColor: "#F1F5F9", paddingLeft:20, paddingRight:20 }}
-              onClick={handleScreen}
-              id="screen"
-              >
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={screen}
-                />
-              </Button>
-              <Button
-              className="border-0"
-              style={{ backgroundColor: "#F1F5F9", paddingLeft:20, paddingRight:20 }}
-              >
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={cam}
-                />
-              </Button>
-              <Button
-              className="border-0"
-              style={{ backgroundColor: "#F1F5F9", paddingLeft:20, paddingRight:20 }}
-              >
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={more}
-                />
-              </Button>
-              <Button
-              className="border-0"
-              style={{ backgroundColor: "#FC5E5A", paddingLeft:20, paddingRight:20 }}
-              >
-                <Image
-                  width={23}
-                  height={23}
-                  style={{ objectFit: "contain" }}
-                  src={phone}
-                />
-              </Button>
+            <Card className="rounded-4 mt-4 px-3">
+              <div className="d-flex justify-content-between p-2">
+                <div className="d-flex">
+                  <div>
+                    <img
+                      className="me-1"
+                      width={15}
+                      height={15}
+                      src={person}
+                      alt=""
+                    />{" "}
+                    <span className="me-1" style={{ fontSize: 12 }}>
+                      Participant
+                    </span>{" "}
+                    <span
+                      className="px-1 rounded-4 me-2"
+                      style={{
+                        backgroundColor: "#E9F7F0",
+                        color: "#31BF7D",
+                        fontSize: 12,
+                      }}
+                    >
+                      2
+                    </span>
+                  </div>
+                  <div>
+                    <img
+                      className="me-1"
+                      width={15}
+                      height={15}
+                      src={roomicon}
+                      alt=""
+                    />
+                    <span className="me-1" style={{ fontSize: 12 }}>
+                      Room Name
+                    </span>{" "}
+                    <span
+                      className="px-1 rounded-4"
+                      style={{
+                        backgroundColor: "#E9F7F0",
+                        color: "#31BF7D",
+                        fontSize: 12,
+                      }}
+                    >
+                      aaa
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  {" "}
+                  <span
+                    className="px-2 rounded-4"
+                    style={{
+                      backgroundColor: "#E9F7F0",
+                      color: "#31BF7D",
+                      fontSize: 12,
+                    }}
+                  >
+                    <img
+                      className="me-2"
+                      width={10}
+                      height={10}
+                      src={copy}
+                      alt=""
+                    />
+                    <span>Copy link meeting</span>
+                  </span>{" "}
+                </div>
+              </div>
+
+              <div className="container rounded-4 d-flex flex-row justify-content-between p-2">
+                <div>
+                  <Button
+                    className="border-0"
+                    style={{
+                      backgroundColor: "#DDE7FF",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={audio}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    mute
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    className="border-0"
+                    style={{
+                      backgroundColor: "#DDE7FF",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={video}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    stop video
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    className="border-0 mx-2"
+                    style={{
+                      backgroundColor: "#F1F5F9",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                    onClick={handleData}
+                    id="data"
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={userdataon}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    data validation
+                  </p>
+                </div>
+
+                <div>
+                  <Button
+                    className="border-0"
+                    style={{
+                      backgroundColor: "#F1F5F9",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                    onClick={handleChat}
+                    id="chat"
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={chat}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    chat
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    className="border-0 mx-2"
+                    style={{
+                      backgroundColor: "#F1F5F9",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                    onClick={handleScreen}
+                    id="screen"
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={screen}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    share screen
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    className="border-0 mx-2"
+                    style={{
+                      backgroundColor: "#F1F5F9",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={cam}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    start recording
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    className="border-0"
+                    style={{
+                      backgroundColor: "#F1F5F9",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={more}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    more
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    className="border-0"
+                    style={{
+                      backgroundColor: "#FC5E5A",
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                    }}
+                  >
+                    <Image
+                      width={23}
+                      height={23}
+                      style={{ objectFit: "contain" }}
+                      src={phone}
+                    />
+                  </Button>
+                  <p className="text-center my-1" style={{ fontSize: 12 }}>
+                    disconnect
+                  </p>
+                </div>
+              </div>
             </Card>
           </Col>
           <Col sm={4}>

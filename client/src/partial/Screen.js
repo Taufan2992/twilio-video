@@ -2,7 +2,7 @@ import React from 'react'
 
 function Screen() {
   return (
-    <div>Screen</div>
+    <div className='fw-bold' style={{height:490}}>Screen</div>
   )
 }
 
