@@ -7,8 +7,12 @@ import offvideo from "../assets/images/offvideo.png"
 import offaudio from "../assets/images/offaudio.png"
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { createLocalTracks } from 'twilio-video'
+import { useContext } from "react";
+import { Videocontext } from "../context/video-context";
 
 function Buttonvid() {
+  const [videoState] = useContext(Videocontext)
+  const [roomName] = useState(videoState.roomName)
   const [state, setState] = useState(true);
 
   const buttonHandler = () => {
@@ -35,9 +39,17 @@ function Buttonvid() {
     console.log("tutup");
     setIsVideoActive((current) => !current);
     const box = document.getElementById("box");
-    const tracks = await createLocalTracks();
+    const tracks = await createLocalTracks({
+      room : roomName
+    });
     const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-    LocalVideoTrack.stop()
+    // LocalVideoTrack.stop()
+    roomName.localParticipant.tracks.forEach(function(track) { 
+      LocalVideoTrack.disable()
+    });
+    // LocalVideoTrack.disable()
+    // .then(_local => {local = _local
+    // local.unpublish(LocalVideoTrack)})
     console.log(tracks);    
     box.innerHTML = '<img src="' + camoff + '" width="100%" />'
   }
