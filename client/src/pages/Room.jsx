@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Participant from "./Participant";
+import { useState, useEffect, useRef} from "react";
+import TwilioVideo from 'twilio-video';
+import { useContext } from "react";
+import { Videocontext } from "../context/video-context";
 import { Container, Row, Col, Image, Card, Button } from "react-bootstrap";
 import ss from "../assets/images/ss.png";
 import maximize from "../assets/images/maximize.png";
@@ -56,6 +58,64 @@ function Room() {
     }
   }
 
+  const [videoState] = useContext(Videocontext)
+    const token = localStorage.token
+    console.log("Access Token : ", token);
+    const [roomName] = useState(videoState.roomName)
+    console.log(videoState.roomName);
+    console.log(token);
+    const localVideoRef = useRef();
+    const remoteVideoRef = useRef();
+
+    function appendNewParticipant(track, identity) {
+        const chat = document.createElement('div');
+        chat.setAttribute('id', identity);
+        chat.appendChild(track.attach());
+        remoteVideoRef.current.appendChild(chat);
+      }
+      useEffect(() => {
+        console.log('Trying to connect to Twilio with token', token);
+        TwilioVideo.connect(token, {
+          video: true,
+          audio: true,
+          name: roomName,
+        })
+          .then((roomName) => {
+            console.log('connected to Twilio');
+            TwilioVideo.createLocalVideoTrack().then((track) => {
+              localVideoRef.current.appendChild(track.attach());
+            });
+            function removeParticipant(participant) {
+              console.log(
+                'Removing participant with identity',
+                participant.identity
+              );
+              const elem = document.getElementById(participant.identity);
+              elem.parentNode.removeChild(elem);
+            }
+            function addParticipant(participant) {
+              console.log('Adding a new Participant');
+              participant.tracks.forEach((publication) => {
+                if (publication.isSubscribed) {
+                  const track = publication.track;
+                  appendNewParticipant(track, participant.identity);
+                  console.log('Attached a track');
+                }
+              });
+              participant.on('trackSubscribed', (track) => {
+                appendNewParticipant(track, participant.identity);
+              });
+            }
+            roomName.participants.forEach(addParticipant);
+            roomName.on('participantConnected', addParticipant);
+            roomName.on('participantDisconnected', removeParticipant);
+          })
+          .catch((e) => {
+            console.log('An error happened', e);
+          });
+        return () => {};
+      }, []);
+
   return (
     <div style={{ backgroundColor: "#FAFAFA", height: "100vh" }}>
       <Container className="py-4">
@@ -80,25 +140,53 @@ function Room() {
 
               <Row>
                 <Col sm={8}>
-                  <Image
+                  {/* <Image
                     className="rounded-4"
                     style={{ objectFit: "cover", width: "100%", position:"relative" }}
                     src="https://img.freepik.com/free-photo/close-up-smiley-man-taking-selfie_23-2149155156.jpg?w=2300"
-                  />
-                  <div className="d-flex m-2" style={{position:"absolute", top:75}}>
+                  /> */}
+
+                  {/* <div 
+                  ref={remoteVideoRef}
+                  id="remotevideo"                 
+                  >
+                  </div> */}
+
+                  <div
+                    id="localvideo"
+                    className="rounded-4"
+                    style={{ width: "100%", position:"relative" }}
+                    ref={localVideoRef}>
+                  </div>
+
+                  {/* <div className="d-flex m-2" style={{position:"absolute", top:75}}>
                     <div className="rounded-3 px-3 py-1 me-3" style={{fontSize:12, backgroundColor:" rgba(0, 0, 0, 0.2)", marginRight:8, color:"white"}}>Nurcahyo</div>
                     <div className="rounded-circle pb-1" style={{backgroundColor:"#4F81FF", paddingLeft:9 , paddingRight:9}}>
                       <img src={signal} width={10} height={10} alt="" />
                     </div>
-                  </div>
+                  </div> */}
                 </Col>
                 <Col sm={4} style={{ position: "relative" }}>
-                  <Image
+                  {/* <Image
                     className="rounded-4"
                     style={{ objectFit: "cover", width: "100%", position:"relative" }}
                     src="https://st.depositphotos.com/2413271/5050/i/950/depositphotos_50503825-stock-photo-handsome-man-taking-selfie.jpg"
-                  />
-                  <div className="d-flex m-2" style={{position:"absolute", top:5}}>
+                  /> */}
+
+                  {/* <div
+                    id="localvideo"
+                    className="rounded-4"
+                    style={{ width: "100%", position:"relative" }}
+                    ref={localVideoRef}>
+                  </div> */}
+
+                  <div 
+                  ref={remoteVideoRef}
+                  id="remotevideo"                 
+                  >
+                  </div>
+
+                  {/* <div className="d-flex m-2" style={{position:"absolute", top:5}}>
                     <div className="rounded-3 px-3 py-1 me-5" style={{fontSize:12, backgroundColor:" rgba(0, 0, 0, 0.2)", marginRight:8, color:"white"}}>Lucky (you)</div>
                     <div className="rounded-circle pb-1 ms-4" style={{backgroundColor:"#4F81FF", paddingLeft:9 , paddingRight:9}}>
                       <img className="" src={signal} width={10} height={10} alt="" />
@@ -130,7 +218,7 @@ function Room() {
                     <p className="mb-0 mt-1 text-center" style={{ fontSize: 12 }}>Maximize</p>
                     </div>
 
-                  </div>
+                  </div> */}
                   {/* <div className="d-inline text-end"><Image src={maximize}/></div> */}
                 </Col>
               </Row>

@@ -22,59 +22,6 @@ export default function Check() {
     console.log(videoState.roomName);
     console.log(token);
     const Navigate = useNavigate();
-    // const [room, setRoom] = useState(null);
-    // const localVideoRef = useRef();
-    // const remoteVideoRef = useRef();
-
-    // function appendNewParticipant(track, identity) {
-    //   const chat = document.createElement('div');
-    //   chat.setAttribute('id', identity);
-    //   chat.appendChild(track.attach());
-    //   remoteVideoRef.current.appendChild(chat);
-    // }
-    // useEffect(() => {
-    //   console.log('Trying to connect to Twilio with token', token);
-    //   TwilioVideo.connect(token, {
-    //     video: true,
-    //     audio: true,
-    //     name: roomName,
-    //   })
-    //     .then((roomName) => {
-    //       console.log('connected to Twilio');
-    //       TwilioVideo.createLocalVideoTrack().then((track) => {
-    //         localVideoRef.current.appendChild(track.attach());
-    //       });
-    //       function removeParticipant(participant) {
-    //         console.log(
-    //           'Removing participant with identity',
-    //           participant.identity
-    //         );
-    //         const elem = document.getElementById(participant.identity);
-    //         elem.parentNode.removeChild(elem);
-    //       }
-    //       function addParticipant(participant) {
-    //         console.log('Adding a new Participant');
-    //         participant.tracks.forEach((publication) => {
-    //           if (publication.isSubscribed) {
-    //             const track = publication.track;
-    //             appendNewParticipant(track, participant.identity);
-    //             console.log('Attached a track');
-    //           }
-    //         });
-    //         participant.on('trackSubscribed', (track) => {
-    //           appendNewParticipant(track, participant.identity);
-    //         });
-    //       }
-    //       roomName.participants.forEach(addParticipant);
-    //       roomName.on('participantConnected', addParticipant);
-    //       roomName.on('participantDisconnected', removeParticipant);
-    //     })
-    //     .catch((e) => {
-    //       console.log('An error happened', e);
-    //     });
-    //   return () => {};
-    // }, []);
-
 
     const handleRoom = async (e) => {
         e.preventDefault();
@@ -83,36 +30,10 @@ export default function Check() {
         const box = document.getElementById("box");
         const tracks = await createLocalTracks();
         const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-        LocalVideoTrack.stop()
+        LocalVideoTrack.disable()
         console.log(tracks);
-        Navigate('/join')
+        Navigate('/room')
     }
-
-// async function rooms() {
-//     const tracks = await createLocalTracks({
-//         audio: true,
-//         video: {facingMode: 'user'}
-//     })
-//     const username = user
-//     const nameRoom = roomName
-//     const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-//     const box = document.getElementById("box");
-//     const on = document.getElementById("on-btn");
-//     const name = document.getElementById("name")
-//     const rooms = document.getElementById("roomName")
-//     await connect(`${token}`, {
-//         name: `${roomName}`,
-//         tracks
-//     })
-//     box.appendChild(LocalVideoTrack.attach());
-//     // on.style.visibility = "hidden";
-//     console.log("Local Tracks : ", tracks);
-//     console.log("You are connect to room : ", nameRoom);
-//     console.log("User Name : ", username);
-//     // name.append(document.createTextNode(username))
-//     // rooms.append(document.createTextNode(`You are connected to room : ${nameRoom}`))
-//     Navigate('/room')
-//   };
 
   return (
     <>

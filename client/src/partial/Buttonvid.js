@@ -44,9 +44,9 @@ function Buttonvid() {
     });
     const LocalVideoTrack = tracks.find(track => track.kind === 'video');
     // LocalVideoTrack.stop()
-    roomName.localParticipant.tracks.forEach(function(track) { 
-      LocalVideoTrack.disable()
-    });
+
+      LocalVideoTrack.stop();
+
     // LocalVideoTrack.disable()
     // .then(_local => {local = _local
     // local.unpublish(LocalVideoTrack)})
