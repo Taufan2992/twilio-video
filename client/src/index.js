@@ -11,7 +11,7 @@ const client = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <UserContextProvider>
       <VideoContextProvider>
         <QueryClientProvider client={client}>
@@ -21,5 +21,5 @@ root.render(
         </QueryClientProvider>
       </VideoContextProvider>
     </UserContextProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

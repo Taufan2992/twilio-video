@@ -31,9 +31,81 @@
     height: 280px;
 }
 
+#singlevideo video {
+    width:680px;
+    margin: auto;
+    border-radius: 20px;
+    object-fit: cover;
+    height: 280px;
+}
+
 #remotevideo video {
     width:100%;
     /* height: 280px; */
     border-radius: 20px;
     object-fit: cover;
+}
+
+.textHead {
+    font-family: 'Proxima Nova Extra Bold', sans-serif;
+    font-weight: 800;
+}
+
+.chatbox {
+    background-color: rgb(238, 238, 253);
+    font-family: 'Proxima Nova Extra Bold', sans-serif;
+    font-weight: 400;
+    border-radius: 10px;
+}
+
+.chatbox-receiper {
+    background-color: #FCD733;
+    font-family: 'Proxima Nova Extra Bold', sans-serif;
+    font-weight: 400;
+    border-radius: 10px;
+}
+
+.inputChat {
+    background-color: rgb(238, 238, 253);
+    border-radius: 10px;
+    border-width: 0;
+    position: relative;
+
+}
+
+.addChat {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+form.index-search-form {
+    position: relative;
+    display: inline-flex;
+  }
+  
+  button[name="submit"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    font-family: 'Proxima Nova Extra Bold', sans-serif;
+    font-weight: 500;
+    font-size: 23px;
+    
+  }
+  
+  input.search-box {
+    width: 250px;
+    font-family: FontAwesome;
+    padding: 2px 0;
+    background-color: rgb(238, 238, 253);
+    border-radius: 8px;
+    border-width: 0;
+  }
+
+.timechat {
+    font-family: 'Proxima Nova Extra Bold', sans-serif;
+    font-size: xx-small;
+    font-weight: 100;
 }

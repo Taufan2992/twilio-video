@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import TwilioVideo from 'twilio-video';
 import { useContext } from "react";
 import { Videocontext } from "../context/video-context";
@@ -25,6 +25,7 @@ import "../style.css";
 
 function Room() {
   const [menu, setMenu] = useState();
+  let [videos, setVideos] = useState(false);
 
   const handleData = () => setMenu(1);
   const handleChat = () => setMenu(2);
@@ -59,62 +60,66 @@ function Room() {
   }
 
   const [videoState] = useContext(Videocontext)
-    const token = localStorage.token
-    console.log("Access Token : ", token);
-    const [roomName] = useState(videoState.roomName)
-    console.log(videoState.roomName);
-    console.log(token);
-    const localVideoRef = useRef();
-    const remoteVideoRef = useRef();
+  const token = localStorage.token
+  console.log("Access Token : ", token);
+  const [roomName] = useState(videoState.roomName)
+  console.log(videoState.roomName);
+  console.log(token);
+  const localVideoRef = useRef();
+  const remoteVideoRef = useRef();
 
-    function appendNewParticipant(track, identity) {
-        const chat = document.createElement('div');
-        chat.setAttribute('id', identity);
-        chat.appendChild(track.attach());
-        remoteVideoRef.current.appendChild(chat);
-      }
-      useEffect(() => {
-        console.log('Trying to connect to Twilio with token', token);
-        TwilioVideo.connect(token, {
-          video: true,
-          audio: true,
-          name: roomName,
-        })
-          .then((roomName) => {
-            console.log('connected to Twilio');
-            TwilioVideo.createLocalVideoTrack().then((track) => {
-              localVideoRef.current.appendChild(track.attach());
-            });
-            function removeParticipant(participant) {
-              console.log(
-                'Removing participant with identity',
-                participant.identity
-              );
-              const elem = document.getElementById(participant.identity);
-              elem.parentNode.removeChild(elem);
+  function appendNewParticipant(track, identity) {
+    const chat = document.createElement('div');
+    chat.setAttribute('id', identity);
+    chat.appendChild(track.attach());
+    remoteVideoRef.current.appendChild(chat);
+  }
+  useEffect(() => {
+    // connect with twilio with token
+    console.log('Trying to connect to Twilio with token', token);
+    TwilioVideo.connect(token, {
+      video: true,
+      audio: true,
+      name: roomName,
+    })
+      .then((roomName) => {
+        // create local video with track, and append to localVideoRef
+        console.log('connected to Twilio');
+        TwilioVideo.createLocalVideoTrack().then((track) => {
+          localVideoRef.current.appendChild(track.attach());
+        });
+        function removeParticipant(participant) {
+          console.log(
+            'Removing participant with identity',
+            participant.identity
+          );
+          const elem = document.getElementById(participant.identity);
+          elem.parentNode.removeChild(elem);
+        }
+        function addParticipant(participant) {
+          console.log('Adding a new Participant');
+          participant.tracks.forEach((publication) => {
+            if (publication.isSubscribed) {
+              const track = publication.track;
+              appendNewParticipant(track, participant.identity);
+              console.log('Attached a track');
             }
-            function addParticipant(participant) {
-              console.log('Adding a new Participant');
-              participant.tracks.forEach((publication) => {
-                if (publication.isSubscribed) {
-                  const track = publication.track;
-                  appendNewParticipant(track, participant.identity);
-                  console.log('Attached a track');
-                }
-              });
-              participant.on('trackSubscribed', (track) => {
-                appendNewParticipant(track, participant.identity);
-              });
-            }
-            roomName.participants.forEach(addParticipant);
-            roomName.on('participantConnected', addParticipant);
-            roomName.on('participantDisconnected', removeParticipant);
-          })
-          .catch((e) => {
-            console.log('An error happened', e);
           });
-        return () => {};
-      }, []);
+          participant.on('trackSubscribed', (track) => {
+            appendNewParticipant(track, participant.identity);
+          });
+        }
+        // agar participant yg baru join on the room bisa saling terkoneksi (forEach)
+        roomName.participants.forEach(addParticipant);
+        roomName.on('participantConnected', addParticipant);
+        roomName.on('participantDisconnected', removeParticipant);
+      })
+      .catch((e) => {
+        console.log('An error happened', e);
+      });
+    return () => {};
+  }, []);
+
 
   return (
     <div style={{ backgroundColor: "#FAFAFA", height: "100vh" }}>
@@ -155,8 +160,9 @@ function Room() {
                   <div
                     id="localvideo"
                     className="rounded-4"
-                    style={{ width: "100%", position:"relative" }}
-                    ref={localVideoRef}>
+                    style={{ width: "100%", position: "relative" }}
+                    ref={localVideoRef}
+                    >
                   </div>
 
                   {/* <div className="d-flex m-2" style={{position:"absolute", top:75}}>
@@ -166,23 +172,24 @@ function Room() {
                     </div>
                   </div> */}
                 </Col>
+
                 <Col sm={4} style={{ position: "relative" }}>
                   {/* <Image
                     className="rounded-4"
                     style={{ objectFit: "cover", width: "100%", position:"relative" }}
                     src="https://st.depositphotos.com/2413271/5050/i/950/depositphotos_50503825-stock-photo-handsome-man-taking-selfie.jpg"
                   /> */}
-
-                  {/* <div
+{/* 
+                  <div
                     id="localvideo"
                     className="rounded-4"
                     style={{ width: "100%", position:"relative" }}
                     ref={localVideoRef}>
                   </div> */}
 
-                  <div 
-                  ref={remoteVideoRef}
-                  id="remotevideo"                 
+                  <div
+                    ref={remoteVideoRef}
+                    id="remotevideo"
                   >
                   </div>
 
@@ -221,6 +228,7 @@ function Room() {
                   </div> */}
                   {/* <div className="d-inline text-end"><Image src={maximize}/></div> */}
                 </Col>
+
               </Row>
             </Card>
             <Card className="rounded-4 mt-4 px-3">

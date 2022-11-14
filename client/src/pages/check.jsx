@@ -1,16 +1,14 @@
-import { useState, useEffect, useRef} from "react";
+import { useState} from "react";
 import { Container, Row, Col, Image, Card, Button } from "react-bootstrap";
 import adira from "../assets/images/adira.png";
 import icon from "../assets/images/icon.png";
 import ready from "../assets/images/ready.png";
 import { useContext } from "react";
 import { Videocontext } from "../context/video-context";
-import { connect, createLocalTracks } from 'twilio-video'
 import { Usercontext } from "../context/user-context";
 import Buttonvid from "../partial/Buttonvid";
 import "../style.css"
 import { useNavigate } from "react-router-dom"
-import TwilioVideo from 'twilio-video';
 
 export default function Check() {
     const [videoState] = useContext(Videocontext)
@@ -27,11 +25,11 @@ export default function Check() {
         e.preventDefault();
         console.log("tutup");
         // setIsVideoActive((current) => !current);
-        const box = document.getElementById("box");
-        const tracks = await createLocalTracks();
-        const LocalVideoTrack = tracks.find(track => track.kind === 'video');
-        LocalVideoTrack.disable()
-        console.log(tracks);
+        // const box = document.getElementById("box");
+        // const tracks = await createLocalTracks();
+        // const LocalVideoTrack = tracks.find(track => track.kind === 'video');
+        // LocalVideoTrack.disable()
+        // console.log(tracks);
         Navigate('/room')
     }
 
@@ -100,9 +98,6 @@ export default function Check() {
             </Col>
           </Row>
         </Container>
-        {/* <h1>Your are in room: {roomName}</h1>
-          <div ref={localVideoRef}></div>
-          <div ref={remoteVideoRef}></div> */}
         </div>
 
     </>

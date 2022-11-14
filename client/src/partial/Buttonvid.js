@@ -23,7 +23,6 @@ function Buttonvid() {
   const [isVideoActive, setIsVideoActive] = useState(true)
 
   const getVideo = async() => {
-
       setIsVideoActive((current) => !current);
       const tracks = await createLocalTracks({
         audio: true,
@@ -44,9 +43,7 @@ function Buttonvid() {
     });
     const LocalVideoTrack = tracks.find(track => track.kind === 'video');
     // LocalVideoTrack.stop()
-
       LocalVideoTrack.stop();
-
     // LocalVideoTrack.disable()
     // .then(_local => {local = _local
     // local.unpublish(LocalVideoTrack)})
@@ -94,9 +91,7 @@ function Buttonvid() {
             className="btn me-2 border-0"
             onClick={buttonHandler}
             style={
-              
               { backgroundColor: "#DDE7FF" }
-                
             }
           >
             {state ? 
@@ -127,7 +122,7 @@ function Buttonvid() {
               }
           >
 
-          {isVideoActive ? 
+          {!isVideoActive ? 
             <img
               src={video}
               width={23}
