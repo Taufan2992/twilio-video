@@ -67,6 +67,10 @@ function Room() {
   console.log(token);
   const localVideoRef = useRef();
   const remoteVideoRef = useRef();
+  let connected = false;
+  console.log(roomName);
+  const count = document.getElementById('count');
+  // let [counts, setCounts] = useState(100)
 
   function appendNewParticipant(track, identity) {
     const chat = document.createElement('div');
@@ -74,6 +78,7 @@ function Room() {
     chat.appendChild(track.attach());
     remoteVideoRef.current.appendChild(chat);
   }
+
   useEffect(() => {
     // connect with twilio with token
     console.log('Trying to connect to Twilio with token', token);
@@ -82,12 +87,15 @@ function Room() {
       audio: true,
       name: roomName,
     })
+    // updateParticipantCount()
       .then((roomName) => {
         // create local video with track, and append to localVideoRef
         console.log('connected to Twilio');
         TwilioVideo.createLocalVideoTrack().then((track) => {
           localVideoRef.current.appendChild(track.attach());
         });
+        connected = true
+        console.log(connected)
         function removeParticipant(participant) {
           console.log(
             'Removing participant with identity',
@@ -103,6 +111,7 @@ function Room() {
               const track = publication.track;
               appendNewParticipant(track, participant.identity);
               console.log('Attached a track');
+              // connected = true
             }
           });
           participant.on('trackSubscribed', (track) => {
@@ -113,13 +122,28 @@ function Room() {
         roomName.participants.forEach(addParticipant);
         roomName.on('participantConnected', addParticipant);
         roomName.on('participantDisconnected', removeParticipant);
+        console.log(roomName.participants.size);
+        
+        const updateParticipantCount = () => {
+          if (!connected) {
+            count.innerHTML = 'Disconnected.';
+            // setCounts = 1
+            // console.log(counts);
+          }
+          else {
+            count.innerHTML = (roomName.participants.size + 1) + ' participants online.';
+            // setCounts = (roomName.participants.size + 1)
+            // console.log(counts);
+          }
+        };
+        updateParticipantCount()
       })
       .catch((e) => {
         console.log('An error happened', e);
       });
     return () => {};
   }, []);
-
+  // console.log(roomName.participants.size);
 
   return (
     <div style={{ backgroundColor: "#FAFAFA", height: "100vh" }}>
@@ -252,8 +276,9 @@ function Room() {
                         color: "#31BF7D",
                         fontSize: 12,
                       }}
+                      id="count"
                     >
-                      2
+                      {/* {counts} */}
                     </span>
                   </div>
                   <div>
@@ -275,7 +300,7 @@ function Room() {
                         fontSize: 12,
                       }}
                     >
-                      aaa
+                      {roomName}
                     </span>
                   </div>
                 </div>

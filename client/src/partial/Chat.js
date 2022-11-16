@@ -28,8 +28,14 @@ function Chat() {
       </div> */}
       <form method="post" className="index-search-form">
   <input name="search" type="text" className="search-box col-10 p-2" placeholder="Write a message.." />
-  <button name="submit" className="" type="submit" >+</button>
-  <div><img src={plane} /></div>
+  <input type="file" id='attach' hidden/><label htmlFor="attach" style={{fontSize:24}}>+</label>
+  <div
+                      className="m-auto p-2 rounded-circle"
+                      style={{ backgroundColor: "#FCD733" }}
+                    >
+                      <img src={plane} width={20} height={20}  />
+                    </div>
+
 </form>
 
       {/* <div>
