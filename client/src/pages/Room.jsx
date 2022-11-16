@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import TwilioVideo from 'twilio-video';
 import { useContext } from "react";
 import { Videocontext } from "../context/video-context";
@@ -25,7 +25,7 @@ import "../style.css";
 
 function Room() {
   const [menu, setMenu] = useState();
-  let [videos, setVideos] = useState(false);
+  // let [videos, setVideos] = useState(false);
 
   const handleData = () => setMenu(1);
   const handleChat = () => setMenu(2);
@@ -70,7 +70,20 @@ function Room() {
   let connected = false;
   console.log(roomName);
   const count = document.getElementById('count');
+  const [room, setRoom] = useState(roomName);
   // let [counts, setCounts] = useState(100)
+
+  const handleLogout = useCallback(() => {
+    setRoom((prevRoom) => {
+      if (prevRoom) {
+        prevRoom.localParticipant.tracks.forEach((trackPub) => {
+          trackPub.track.stop();
+        });
+        prevRoom.disconnect();
+      }
+      return null;
+    });
+  }, []);
 
   function appendNewParticipant(track, identity) {
     const chat = document.createElement('div');
@@ -255,6 +268,7 @@ function Room() {
 
               </Row>
             </Card>
+            
             <Card className="rounded-4 mt-4 px-3">
               <div className="d-flex justify-content-between p-2">
                 <div className="d-flex">
@@ -278,7 +292,7 @@ function Room() {
                       }}
                       id="count"
                     >
-                      {/* {counts} */}
+
                     </span>
                   </div>
                   <div>
@@ -496,6 +510,7 @@ function Room() {
                 </div>
               </div>
             </Card>
+
           </Col>
           <Col sm={4}>
             <Card className="p-4 rounded-4">

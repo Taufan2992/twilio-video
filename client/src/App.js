@@ -11,7 +11,7 @@ function App() {
       <Route exact path='/prejoin' element={<Prejoin/>}/>
       <Route exact path='/check' element={<Check/>}/>
       <Route exact path='/room' element={<Room/>}/>
-      {/* <Route exact path='/join' element={<Join/>}/> */}
+      <Route exact path='/join' element={<Join/>}/>
     </Routes>
   );
 }
