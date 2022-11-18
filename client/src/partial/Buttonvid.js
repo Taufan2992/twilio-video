@@ -23,7 +23,7 @@ function Buttonvid() {
   const [isVideoActive, setIsVideoActive] = useState(true)
 
   const getVideo = async() => {
-      setIsVideoActive((current) => !current);
+      setIsVideoActive(true);
       const tracks = await createLocalTracks({
         audio: true,
         video: { height: 720, frameRate: 24, width: 1280 }
@@ -36,7 +36,7 @@ function Buttonvid() {
 
   const stopVideo = async() => {
     console.log("tutup");
-    setIsVideoActive((current) => !current);
+    setIsVideoActive(false);
     const box = document.getElementById("box");
     const tracks = await createLocalTracks({
       room : roomName
@@ -84,9 +84,9 @@ function Buttonvid() {
 // }
 
   return (
-    <Container style={{ position: "absolute", top: 290, left: 295 }}>
-      <Row>
-        <Col className="bg-white rounded-4 p-3 d-flex" sm={3}>
+    <Container style={{ position: "absolute", top: "75%", left: "27%" }}>
+      {/* <Row> */}
+        <div className="bg-white rounded-4 px-3 pt-3 d-inline" style={{paddingBottom:21}}>
         <Button
             className="btn me-2 border-0"
             onClick={buttonHandler}
@@ -122,7 +122,7 @@ function Buttonvid() {
               }
           >
 
-          {!isVideoActive ? 
+          {isVideoActive ? 
             <img
               src={video}
               width={23}
@@ -150,8 +150,8 @@ function Buttonvid() {
               alt=""
             />
           </Button>
-        </Col>
-      </Row>
+        </div>
+      {/* </Row> */}
     </Container>
   );
 }

@@ -38,7 +38,7 @@ export default function Check() {
       <div style={{ backgroundColor: "#FAFAFA", height: "100vh" }}>
         <Container className="py-4">
           <Row>
-            <Col sm={6} md={6} className="align-item-center">
+            <Col xs={6} className="align-item-center">
               <Image src={adira} />
               <p
                 className="textDefault d-inline ms-3"
@@ -47,13 +47,13 @@ export default function Check() {
                 SURVEY VIDEO
               </p>
             </Col>
-            <Col sm={6} md={6} className="text-end">
+            <Col xs={6}  className="text-end">
               <Row>
-                <Col sm={10}>
+                <Col xs={10}>
                   <p className="mb-0 mt-2">{state.user}</p>
                   <p className="m-0">Surveyor</p>
                 </Col>
-                <Col sm={2}>
+                <Col xs={2}>
                   <Image src={icon} />
                 </Col>
               </Row>
@@ -65,19 +65,19 @@ export default function Check() {
             <Col
               sm={8}
               className="rounded-4"
-              style={{ position: "relative", paddingLeft: 30 }}
+              style={{paddingLeft: 30 ,position:"relative"}}
             >
 
-              <div id="box"></div>
+              <div  id="box"></div>
 
-              <Buttonvid />
+              <Buttonvid/>
             </Col>
             <Col sm={4} className="px-3">
               <Card
                 className="rounded-4 text-center me-3"
                 style={{ height: 404 }}
               >
-                <Card.Img variant="top" src={ready} className="px-5 py-4" />
+                <Card.Img variant="top" src={ready} className="w-75 pt-3 m-auto" />
                 <Card.Body>
                   <Card.Title
                     className="textDefault py-3"
