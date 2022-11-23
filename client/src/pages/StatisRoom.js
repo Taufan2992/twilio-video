@@ -25,11 +25,11 @@ import "../style.css";
 
 function StatisRoom() {
     const [menu, setMenu] = useState();
-    // let [videos, setVideos] = useState(false);
   
     const handleData = () => setMenu(1);
     const handleChat = () => setMenu(2);
     const handleScreen = () => setMenu(3);
+    let initialButtonColor = false
   
     function GetData() {
       if (menu === 1) {
@@ -39,6 +39,7 @@ function StatisRoom() {
         btnChat.style.backgroundColor = "rgb(241 245 249)";
         const btnScreen = document.getElementById("screen");
         btnScreen.style.backgroundColor = "rgb(241 245 249)";
+        initialButtonColor = false
         return <Data />;
       } else if (menu === 2) {
         const btnChat = document.getElementById("chat");
@@ -47,6 +48,7 @@ function StatisRoom() {
         btnScreen.style.backgroundColor = "rgb(241 245 249)";
         const btnData = document.getElementById("data");
         btnData.style.backgroundColor = "rgb(241 245 249)";
+        initialButtonColor = false
         return <Chat />;
       } else if (menu === 3) {
         const btnScreen = document.getElementById("screen");
@@ -55,7 +57,13 @@ function StatisRoom() {
         btnChat.style.backgroundColor = "rgb(241 245 249)";
         const btnData = document.getElementById("data");
         btnData.style.backgroundColor = "rgb(241 245 249)";
+        initialButtonColor = false
         return <Screen />;
+      } else if (!menu) {
+        // const btnChat = document.getElementById("chat");
+        // btnChat.style.backgroundColor = "rgb(79	129	255)";
+        initialButtonColor =true
+        return <Chat />;
       }
     }
   
@@ -281,11 +289,17 @@ function StatisRoom() {
                 <div>
                   <Button
                     className="border-0"
-                    style={{
-                      backgroundColor: "#F1F5F9",
+                    style={!initialButtonColor ? {
+                      backgroundColor: "rgb(79	129	255)",
                       paddingLeft: 20,
                       paddingRight: 20,
-                    }}
+                    }
+                  :
+                  {
+                    backgroundColor: "#F1F5F9",
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                  }}
                     onClick={handleChat}
                     id="chat"
                   >

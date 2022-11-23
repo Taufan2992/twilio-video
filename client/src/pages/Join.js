@@ -173,8 +173,8 @@ const handleChange = (e) => {
       >Join call</button>
     </form>
     <p id="count"></p>
-    <div id="container" class="container">
-      <div id="local" class="participant">
+    <div id="container" className="container">
+      <div id="local" className="participant">
         <div></div>
         <div>Me</div>
       </div>
