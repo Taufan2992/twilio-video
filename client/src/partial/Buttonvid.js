@@ -84,7 +84,7 @@ function Buttonvid() {
 // }
 
   return (
-    <Container style={{ position: "absolute", top: "75%", left: "27%" }}>
+    <Container style={{ position: "absolute", top: "75%", left: "37%" }}>
       {/* <Row> */}
         <div className="bg-white rounded-4 px-3 pt-3 d-inline" style={{paddingBottom:21}}>
         <Button
