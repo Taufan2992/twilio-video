@@ -87,7 +87,10 @@ function Room() {
       .then((roomName) => {
         // create local video with track, and append to localVideoRef
         console.log("connected to Twilio");
-        TwilioVideo.createLocalVideoTrack().then((track) => {
+        TwilioVideo.createLocalVideoTrack({
+          audio: true,
+          video: { height: 720, frameRate: 24, width: 1280 }
+       }).then((track) => {
           localVideoRef.current.appendChild(track.attach());
         });
         setConnects(false)

@@ -208,3 +208,17 @@ form.index-search-form {
     width: 20px; 
     padding-left: 2px;
   }
+
+.btncolor  {
+    background-color: #F1F5F9ed;
+    color: black;
+}
+
+.btncolor:focus {     
+    background-color:#4F81FF;   
+    color: white; 
+}
+
+.btncolor:hover {     
+  background-color:#4F81FF;   
+}
