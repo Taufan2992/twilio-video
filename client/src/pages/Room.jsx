@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import TwilioVideo from "twilio-video";
+import { useNavigate } from "react-router-dom"
+import TwilioVideo, {connect} from "twilio-video";
 import { useContext } from "react";
 import { Videocontext } from "../context/video-context";
 import { Container, Row, Col, Image, Card, Button } from "react-bootstrap";
@@ -68,55 +69,89 @@ function Room() {
   const localVideoRef = useRef();
   const remoteVideoRef = useRef();
   console.log(roomName);
+  const [ids, setIds] = useState();
+  console.log(ids);
+  const Navigate = useNavigate();
+  const [twilioPublication, setTwilioPublication] = useState();
 
   function appendNewParticipant(track, identity) {
     const chat = document.createElement("div");
     chat.setAttribute("id", identity);
     chat.appendChild(track.attach());
     remoteVideoRef.current.appendChild(chat);
+    console.log("identity",identity);
+    setIds(identity)
+    
   }
+
+
+
+  function removeParticipants(participant) {
+    console.log(
+      "Removing participant with identity",
+      participant
+    );
+    console.log(twilioPublication);
+    twilioPublication.stop()
+    const elem = document.getElementById(ids);
+    elem.parentNode.removeChild(elem);
+    console.log(twilioPublication);
+    // Navigate('/check')
+
+  }
+
 
   useEffect(() => {
     // connect with twilio with token
     console.log("Trying to connect to Twilio with token", token);
-    TwilioVideo.connect(token, {
+    const twl = connect(token, {
       video: true,
       audio: true,
       name: roomName,
     })
       .then((roomName) => {
         // create local video with track, and append to localVideoRef
-        console.log("connected to Twilio");
+        console.log("connected to Twilio", twl);
         TwilioVideo.createLocalVideoTrack({
           audio: true,
           video: { height: 720, frameRate: 24, width: 1280 }
        }).then((track) => {
           localVideoRef.current.appendChild(track.attach());
+          console.log("connected to Twilio", track);
+          // track.stop();
+          console.log("connected to Twilio", track);
         });
         setConnects(false)
         console.log(connects);
         function removeParticipant(participant) {
           console.log(
             "Removing participant with identity",
-            participant.identity
+            participant
           );
           const elem = document.getElementById(participant.identity);
           elem.parentNode.removeChild(elem);
+
         }
         function addParticipant(participant) {
-          console.log("Adding a new Participant");
+          console.log("Adding a new Participant", participant);
           participant.tracks.forEach((publication) => {
             if (publication.isSubscribed) {
               const track = publication.track;
+              console.log("Attached a track", publication);
               appendNewParticipant(track, participant.identity);
-              console.log("Attached a track");
+              
             }
+            // publication.track.disable()
+            setTwilioPublication(publication.track);
+            console.log(twilioPublication);
+            
           });
           participant.on("trackSubscribed", (track) => {
             appendNewParticipant(track, participant.identity);
+            console.log(track);
           });
           setConnects(true);
-          console.log(connects);
+          
         }
         // agar participant yg baru join on the room bisa saling terkoneksi (forEach)
         roomName.participants.forEach(addParticipant);
@@ -127,6 +162,7 @@ function Room() {
       .catch((e) => {
         console.log("An error happened", e);
       });
+
     return () => {};
   }, []);
 
@@ -393,6 +429,8 @@ function Room() {
                       paddingLeft: 20,
                       paddingRight: 20,
                     }}
+                    onClick={removeParticipants}
+                    // id={ids}
                   >
                     <Image
                       width={23}

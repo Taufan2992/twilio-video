@@ -210,8 +210,10 @@ form.index-search-form {
   }
 
 .btncolor  {
-    background-color: #F1F5F9ed;
+    background-color: #F1F5F9 !important;
     color: black;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
 }
 
 .btncolor:focus {     
@@ -220,5 +222,6 @@ form.index-search-form {
 }
 
 .btncolor:hover {     
-  background-color:#4F81FF;   
+  background: #4F81FF !important;   
+  color: white !important; 
 }
